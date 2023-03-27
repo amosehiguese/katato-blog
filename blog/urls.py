@@ -20,5 +20,7 @@ urlpatterns = [
     path('<int:year>/<int:month>/<int:day>/<slug:post>', views.post_detail, name='post_detail'),
     path('<int:post_id>/share/', views.share_post, name='share_post'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path('feed/', LatestPostsFeed(), name='post_feed')
+    path('feed/', LatestPostsFeed(), name='post_feed'),
+    path('search', views.post_search, name='post_search')
+
 ]

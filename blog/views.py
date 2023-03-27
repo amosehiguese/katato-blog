@@ -1,12 +1,15 @@
 # Django import
 from django.shortcuts import render, get_object_or_404
+from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.db.models import Count
 from django.views.generic import ListView
 
 # Model import
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm
+
+# Form import
+from .forms import EmailPostForm, CommentForm, SearchForm
 
 # 3rd party model import 
 from taggit.models import Tag
@@ -101,3 +104,20 @@ def share_post(request, post_id):
         'form': form,
         'sent': sent,
     })
+
+# Search view
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.published.annotate(search=SearchVector('title', 'body'),).filter(search=query)
+    return render(request,'blog/post/search.html', {
+            'form': form,
+            'query': query,
+            'results': results
+        }
+    )
