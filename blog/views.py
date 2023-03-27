@@ -1,17 +1,40 @@
+# Django import
 from django.shortcuts import render, get_object_or_404
 from django.core.mail import send_mail
 from django.views.generic import ListView
 
+# Model import
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm
 
+# 3rd party model import 
+from taggit.models import Tag
 
+# List View
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/list.html'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tag_slug = self.kwargs.get('tag_slug', None)
+        print(tag_slug)
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            queryset = queryset.filter(tags__in=[tag])
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag_slug = self.kwargs.get('tag_slug')
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=self.kwargs['tag_slug'])
+            context['tag'] = tag
+        return context
+    
+# Detail view
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(Post, slug=post, status='published', publish__year=year, publish__month=month, publish__day=day)
 
@@ -34,6 +57,8 @@ def post_detail(request, year, month, day, post):
 
     return render(request, 'blog/post/detail.html', {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
+
+# Post sharing view
 def share_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, status='published')
     sent = False
