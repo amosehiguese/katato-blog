@@ -1,4 +1,4 @@
-# Katato Blog
+# Katato Blog With Django
 
 This is a Django-based blog app that allows users to view, and comment on blog posts. In addition to standard blog features, this app includes the following features:
 
