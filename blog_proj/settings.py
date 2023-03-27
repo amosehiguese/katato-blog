@@ -91,8 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'blog',
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
     },
     'custom': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -144,7 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email configuration
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.getenv('USER')
-EMAIL_HOST_PASSWORD = os.getenv('PASSWORD')
+EMAIL_HOST_USER = os.environ.get('USER')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
