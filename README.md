@@ -13,7 +13,7 @@ This is a Django-based blog app that allows users to view, and comment on blog p
 
 To install and run this app, follow these steps:
 
-- lone the repository: `git clone https://github.com/amosehiguese/katato-blog.git`
+- Clone the repository: `git clone https://github.com/amosehiguese/katato-blog.git`
 - Install the required packages: pip install -r requirements.txt
 - Set up the database: python manage.py migrate
 - Create a superuser: python manage.py createsuperuser
